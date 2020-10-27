@@ -1,0 +1,100 @@
+@startuml
+
+class App {
+    void main()
+}
+
+App --* "1" TerminalMastermind.Controller
+
+package TerminalMastermind {
+    class ColorStringAdapter {
+        + {static} bool isValidColorString(String input);
+        + {static} Combination getStringToCombination(String input);
+        + {static} String getCombinationToString(Combination c)
+    }
+
+    class FeedbackCodeAdapter {
+        + {static} String getFeedbackString(FeedbackCode);
+    }
+
+    class Controller {
+        + void startGameLoop();
+        - String getNewCombination();
+        - void printErrorWrongLength();
+        - void printErrorWrongColors();
+        - void printWinning();
+        - void printLossing();
+        - bool askResumeGame();
+    }
+
+    Controller --> ColorStringAdapter
+    Controller -> FeedbackCodeAdapter
+    Controller -* "1" Mastermind.Board
+    Controller ..> Mastermind.Combination
+    Controller ..> Mastermind.FeedbackCode
+    ColorStringAdapter  ..> Mastermind.Combination
+    ColorStringAdapter  ..> Mastermind.Color
+    FeedbackCodeAdapter ..> Mastermind.FeedbackCode
+    FeedbackCodeAdapter ..> Mastermind.FBColor
+
+}
+
+package Mastermind {
+
+    class Board {
+        - List<Combination>  pCombinations;
+        - List<FeedbackCode> fCombinations;
+        - Combination secret;
+        - int attempts = 0;
+        + FeedbackCode pushNewCombination(Combination c);
+        + List<Combinations> getBoardCombinations();
+        + List<FeedbackCode> getFeedbackCodes();
+    }
+
+    Board --* "1..n" Combination
+    Board --* "0..n" FeedbackCode
+    Board ..> SecretFactory
+
+    class Combination {
+        - List<Color> combination;
+        + Combination Combination(List<Color> colors);
+        + FeedbackCode getFeedBackFromSecret(Combination secret);
+        + List<Color> getColors();
+    }
+
+    Combination ...> FeedbackCode
+    Combination ...o "1..n" Color
+
+    class FeedbackCode {
+        - FBColor colors[5];
+        + FeedbackCode FeedbackCode(List<FBColor> fbcolors);
+        + bool isAllBlacks();
+    }
+
+    FeedbackCode .o "1..n" FBColor
+
+    enum FBColor {
+        WHITE
+        BLACK
+        NULL
+    }
+
+    enum Color {
+        RED
+        BLUE
+        YELLOW
+        GREEN
+        ORANGE
+        PURPLE
+    }
+
+    class SecretFactory {
+        - RandomNumberGenerator r;
+        + Combination generateSecret();
+    }
+
+    SecretFactory ..> Combination
+
+}
+
+@enduml
