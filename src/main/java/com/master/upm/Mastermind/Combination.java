@@ -2,28 +2,29 @@ package com.master.upm.Mastermind;
 
 import java.util.ArrayList;
 
-public class Combination {
-    private Color ccolors[];
-    private int length;
+public class Combination extends Code {
 
-    private boolean colorInList (Color color, ArrayList<Color> list) {
-        for (Color c : list) {
-            if (c == color)
-                return true;
+    private boolean verifyValidColors(ArrayList<Color> colors) {
+        for (Color c: colors) {
+            if (c == Color.BLACK || c == Color.WHITE || c == Color.NULL)
+                return false;
         }
-        return false;
+        return true;
     }
 
     /**
-     * Preconditions: At least 1 color is given inside the parameter list.
+     * Preconditions:
+     *  - At least 1 color is given inside the parameter list.
+     *  - Colors cannot contain WHITE, BLACK or NULL.
     */
     public Combination(ArrayList<Color> colors) {
         assert colors.size() > 0 : "Empty color list forbiden.";
+        assert verifyValidColors(colors) : "Colors BLACK, WHITE and NULL are forbidden in combinations.";
 
-        this.length = colors.size();
-        this.ccolors = new Color[colors.size()];
+        super.length = colors.size();
+        super.colors = new Color[colors.size()];
         for (int i = 0; i < colors.size(); ++i)
-            ccolors[i] = colors.get(i);
+            super.colors[i] = colors.get(i);
     }
 
     /**
@@ -33,37 +34,27 @@ public class Combination {
      * preconditions: The secret and the combination have the same size.
      */
     public FeedbackCode getFeedbackCodeFromSecret(Combination secret) {
-        assert secret.getLength() == this.length : "Combinations not comparable.";
+        assert secret.getLength() == super.length : "Combinations not comparable.";
 
         ArrayList<Color> secretColors = new ArrayList();
         for (Color c: secret.getColors())
             secretColors.add(c);
 
-        ArrayList<FBColor> feedbackColors = new ArrayList();
+        ArrayList<Color> feedbackColors = new ArrayList();
 
         for (int i=0; i<this.length; ++i) {
-            if (ccolors[i] == secretColors.get(i)) {
-                feedbackColors.add(FBColor.BLACK);
+            if (super.colors[i] == secretColors.get(i)) {
+                feedbackColors.add(Color.BLACK);
             }
             else {
-                if (this.colorInList(ccolors[i], secretColors))
-                    feedbackColors.add(FBColor.WHITE);
+                if (this.colorInList(super.colors[i], secretColors))
+                    feedbackColors.add(Color.WHITE);
                 else
-                    feedbackColors.add(FBColor.NULL);
+                    feedbackColors.add(Color.NULL);
             }
         }
-
         return new FeedbackCode(feedbackColors);
     }
 
-    public ArrayList<Color> getColors() {
-        ArrayList<Color> colors = new ArrayList();
-        for (int i=0; i<this.length; ++i)
-            colors.add(ccolors[i]);
-        return colors;
-    }
 
-    public int getLength() {
-        return this.length;
-    }
 }

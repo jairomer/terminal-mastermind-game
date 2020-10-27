@@ -1,5 +1,8 @@
 com/master/upm/App.class
-com/master/upm/Mastermind/FBColor.class
+com/master/upm/Mastermind/Code.class
+com/master/upm/TerminalMastermind/CodeToStringAdapter$1.class
+com/master/upm/TerminalMastermind/CodeToStringAdapter.class
+com/master/upm/Mastermind/Board.class
 com/master/upm/Mastermind/SecretFactory.class
 com/master/upm/Mastermind/FeedbackCode.class
 com/master/upm/Mastermind/Color.class

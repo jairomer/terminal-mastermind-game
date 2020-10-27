@@ -4,7 +4,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
 import com.master.upm.Mastermind.Combination;
-import com.master.upm.Mastermind.FBColor;
+import com.master.upm.Mastermind.Color;
+import com.master.upm.Mastermind.Board;
 import com.master.upm.Mastermind.Color;
 import com.master.upm.Mastermind.FeedbackCode;
 import com.master.upm.Mastermind.SecretFactory;
@@ -18,31 +19,37 @@ public class MastermindTest
 
     @Test
     public void feedBackCodeisAllBlacks() {
-        ArrayList<FBColor> arr = new ArrayList();
-        arr.add(FBColor.BLACK);
+        ArrayList<Color> arr = new ArrayList();
+        arr.add(Color.BLACK);
         FeedbackCode fc = new FeedbackCode(arr);
         assertTrue(fc.isAllBlacks());
 
-        ArrayList<FBColor> arr2 = new ArrayList();
-        arr2.add(FBColor.BLACK);
-        arr2.add(FBColor.BLACK);
-        arr2.add(FBColor.BLACK);
+        ArrayList<Color> arr2 = new ArrayList();
+        arr2.add(Color.BLACK);
+        arr2.add(Color.BLACK);
+        arr2.add(Color.BLACK);
         FeedbackCode fc2 = new FeedbackCode(arr2);
         assertTrue(fc2.isAllBlacks());
 
-        ArrayList<FBColor> arr3 = new ArrayList();
-        arr3.add(FBColor.NULL);
-        arr3.add(FBColor.BLACK);
-        arr3.add(FBColor.BLACK);
+        assertTrue(fc2.equals(fc2));
+
+        ArrayList<Color> arr3 = new ArrayList();
+        arr3.add(Color.NULL);
+        arr3.add(Color.BLACK);
+        arr3.add(Color.BLACK);
         FeedbackCode fc3 = new FeedbackCode(arr3);
         assertFalse(fc3.isAllBlacks());
 
-        ArrayList<FBColor> arr4 = new ArrayList();
-        arr4.add(FBColor.WHITE);
-        arr4.add(FBColor.BLACK);
-        arr4.add(FBColor.BLACK);
+        assertFalse(fc3.equals(fc2));
+
+        ArrayList<Color> arr4 = new ArrayList();
+        arr4.add(Color.WHITE);
+        arr4.add(Color.BLACK);
+        arr4.add(Color.BLACK);
         FeedbackCode fc4 = new FeedbackCode(arr4);
         assertFalse(fc4.isAllBlacks());
+
+        assertFalse(fc4.equals(fc3));
     }
 
     @Test
@@ -85,6 +92,49 @@ public class MastermindTest
         FeedbackCode fc2 = combo2.getFeedbackCodeFromSecret(secret);
 
         assertFalse(fc2.isAllBlacks());
+    }
+
+    @Test
+    public void boardIsVerifyingNewCombination() {
+        int codeLength = 3;
+        Board board = new Board(codeLength);
+
+        Combination secret = board.getSecret();
+
+        ArrayList<Color> colors_1 = new ArrayList();
+        colors_1.add(Color.RED);
+        colors_1.add(Color.RED);
+        colors_1.add(Color.RED);
+        Combination Combo1 = new Combination(colors_1);
+
+        colors_1.set(1, Color.BLUE);
+        Combination Combo2 = new Combination(colors_1);
+
+        colors_1.set(2, Color.GREEN);
+        Combination Combo3 = new Combination(colors_1);
+
+        FeedbackCode fc_1a = board.pushNewCombination(Combo1);
+        FeedbackCode fc_2a = board.pushNewCombination(Combo2);
+        FeedbackCode fc_3a = board.pushNewCombination(Combo3);
+
+        FeedbackCode fc_1b = Combo1.getFeedbackCodeFromSecret(secret);
+        FeedbackCode fc_2b = Combo2.getFeedbackCodeFromSecret(secret);
+        FeedbackCode fc_3b = Combo3.getFeedbackCodeFromSecret(secret);
+
+        assertTrue (fc_1a.equals(fc_1b));
+        assertTrue (fc_2a.equals(fc_2b));
+        assertTrue (fc_3a.equals(fc_3b));
+
+        ArrayList<Combination> combos = board.getCombinationList();
+        ArrayList<FeedbackCode> feedbacks = board.getFeedbackList();
+
+        assertTrue(Combo1.equals(combos.get(0)));
+        assertTrue(Combo2.equals(combos.get(1)));
+        assertTrue(Combo3.equals(combos.get(2)));
+
+        assertTrue(fc_1a.equals(feedbacks.get(0)));
+        assertTrue(fc_2a.equals(feedbacks.get(1)));
+        assertTrue(fc_3a.equals(feedbacks.get(2)));
     }
 
 }
