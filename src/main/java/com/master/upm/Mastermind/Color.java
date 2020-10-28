@@ -9,5 +9,16 @@ public enum Color {
     PURPLE,
     WHITE,
     BLACK,
-    NULL
+    NULL;
+
+    public static Color[] CombinationValues() {
+        return new Color[] {
+            RED,
+            BLUE,
+            YELLOW,
+            GREEN,
+            ORANGE,
+            PURPLE
+        };
+    }
 }

@@ -1,20 +1,18 @@
 package com.master.upm.Mastermind;
 
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.ArrayList;
 
 public class SecretFactory {
-    private Random randomIntegerGenerator;
     private int length;
 
     private Color getRandomColor() {
-        int selection = (int) randomIntegerGenerator.nextFloat() * Color.values().length;
+        int selection =  ThreadLocalRandom.current().nextInt(0, Color.CombinationValues().length);
         return Color.values()[selection];
     }
 
     public SecretFactory(int length) {
         this.length = length;
-        randomIntegerGenerator = new Random();
     }
 
     public Combination generateSecret() {

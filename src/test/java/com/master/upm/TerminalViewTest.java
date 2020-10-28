@@ -67,4 +67,5 @@ public class TerminalViewTest
         assertTrue(converted.contentEquals("1 blacks and 1 whites"));
     }
 
+
 }

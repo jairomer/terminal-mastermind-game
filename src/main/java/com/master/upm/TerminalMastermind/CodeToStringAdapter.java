@@ -6,7 +6,7 @@ import com.master.upm.Mastermind.FeedbackCode;
 
 import java.util.ArrayList;
 
-public class CodeToStringAdapter {
+public final class CodeToStringAdapter {
 
     // Colors WHITE, BLACK and null are not considered, as
     // they should never inserted by a player.
@@ -55,7 +55,17 @@ public class CodeToStringAdapter {
         return "*";
     }
 
+    public static String getDefinedColors() {
+        String defined = "";
+        for (int i=0; i<DEFINED.length; ++i)
+            defined += DEFINED[i];
+        return defined;
+    }
+
     public static boolean isValidColorString(String colorInput) {
+        if (colorInput.length() == 0)
+            return false;
+
         for (char c: colorInput.toCharArray()) {
             if (!colorDefined(c))
                 return false;

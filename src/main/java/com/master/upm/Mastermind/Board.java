@@ -43,4 +43,8 @@ public class Board {
         return secretCombo;
     }
 
+    public int getCodeLength() {
+        return length;
+    }
+
 }

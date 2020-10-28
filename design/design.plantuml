@@ -4,7 +4,7 @@ class App {
     void main()
 }
 
-App --* "1" TerminalMastermind.Controller
+App --* "1" TerminalMastermind.ConsoleController
 
 package TerminalMastermind {
     class CodeToStringAdapter {
@@ -14,20 +14,20 @@ package TerminalMastermind {
         + {static} String getFeedbackString(FeedbackCode);
     }
 
-    class Controller {
+    class ConsoleController {
         + void startGameLoop();
         - String getNewCombination();
         - void printErrorWrongLength();
         - void printErrorWrongColors();
         - void printWinning();
         - void printLossing();
-        - booleanaskResumeGame();
+        - boolean askResumeGame();
     }
 
-    Controller --> CodeToStringAdapter
-    Controller -* "1" Mastermind.Board
-    Controller ..> Mastermind.Combination
-    Controller ..> Mastermind.FeedbackCode
+    ConsoleController --> CodeToStringAdapter
+    ConsoleController -* "1" Mastermind.Board
+    ConsoleController ..> Mastermind.Combination
+    ConsoleController ..> Mastermind.FeedbackCode
     CodeToStringAdapter  ..> Mastermind.Combination
     CodeToStringAdapter  ..> Mastermind.Color
 
